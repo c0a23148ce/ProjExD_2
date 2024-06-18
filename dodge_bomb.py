@@ -5,6 +5,8 @@ import pygame as pg
 
 
 WIDTH, HEIGHT = 1600, 900
+
+
 MV_DIC = {  # 移動量を表す辞書
     pg.K_UP:(0, -5), 
     pg.K_DOWN:(0, +5), 
@@ -15,6 +17,7 @@ MV_DIC = {  # 移動量を表す辞書
     pg.K_a:(-5, +5), 
     pg.K_s:(+5, +5)
     }
+
 
 MV_KK = {
     (+5, -5):135,
@@ -27,10 +30,13 @@ MV_KK = {
     (+5, 0):0
     }
 
+
 #加速度のリスト
 accs = [a for a in range(1, 11)]
 
+
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 def roto_kk(mv) -> tuple[bool]:
      """
@@ -40,7 +46,6 @@ def roto_kk(mv) -> tuple[bool]:
          if mv is k:
              return v
         
-
 
 def check_bound(rct:pg.Rect) -> tuple[bool, bool]:
     """
@@ -54,6 +59,7 @@ def check_bound(rct:pg.Rect) -> tuple[bool, bool]:
     if rct.top < 0 or HEIGHT < rct.bottom:
         tate = False
     return yoko, tate
+
 
 def GameOver():
     return 
@@ -117,10 +123,8 @@ def main():
             b_img = pg.Surface((20*r, 20*r))
             pg.draw.circle(bom_img, (255, 0, 0), (10*r, 10*r), 10*r)
 
-
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
-
         screen.blit(kk_img, kk_rct)
 
         bom_rct.move_ip(vx, vy)
@@ -130,6 +134,7 @@ def main():
         if not tate:
             vy *= -1
         screen.blit(bom_img, bom_rct)
+        
         pg.display.update()
         tmr += 1
         clock.tick(50)
