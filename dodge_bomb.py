@@ -27,11 +27,15 @@ MV_KK = {
     (+5, 0):0
     }
 
-
+#加速度のリスト
+accs = [a for a in range(1, 11)]
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-def roto_kk(mv):
+def roto_kk(mv) -> tuple[bool]:
+     """
+     MV_KKのキーを取得し、値を返す
+     """
      for k, v in MV_KK.items():
          if mv is k:
              return v
@@ -51,7 +55,15 @@ def check_bound(rct:pg.Rect) -> tuple[bool, bool]:
         tate = False
     return yoko, tate
 
+def GameOver():
+    return 
 
+
+def bom_speed(num:int) -> tuple[bool]:
+    """
+    課題２：リストのタプルを返す
+    """
+    return tuple(accs)
 
 
 def main():
@@ -69,6 +81,10 @@ def main():
     bom_rct.center = random.randint(0, WIDTH), random.randint(0, HEIGHT)
     vx, vy = +5, +5
 
+    black = pg.Surface((1600, 900))
+    pg.draw.rect(black,(0, 0, 0), pg.Rect(0, 0, 1600, 900))
+    #Surface.set_alpha(50)
+
     clock = pg.time.Clock()
     tmr = 0
 
@@ -78,6 +94,9 @@ def main():
                 return
         
         if kk_rct.colliderect(bom_rct):
+            fonto = pg.font.Font(None, 100)
+            txt = fonto.render("Game Over",True, (255, 255, 255))
+            screen.blit(txt, [300, 200])
             return #ゲームオーバー
         screen.blit(bg_img, [0, 0])
             
@@ -93,7 +112,10 @@ def main():
             kk_img = pg.transform.flip(kk_img, True, False)
             kk_img = pg.transform.rotozoom(pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 2.0), num, 1.0)
         kk_rct.move_ip(sum_mv)
-        
+     
+        for r in range(1, 11):
+            b_img = pg.Surface((20*r, 20*r))
+            pg.draw.circle(bom_img, (255, 0, 0), (10*r, 10*r), 10*r)
 
 
         if check_bound(kk_rct) != (True, True):
