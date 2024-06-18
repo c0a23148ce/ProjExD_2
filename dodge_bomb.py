@@ -14,6 +14,19 @@ MV_DIC = {  # 移動量を表す辞書
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
+def check_bound(rct:pg.Rect) -> tuple[bool, bool]:
+    """
+    引数：こうかとんRectまたは爆弾Rect
+    戻り値：真理値タプル（横方向、縦方向）
+    画面内ならTrue　画面外ならFalse
+    """
+    yoko, tate = True, True
+    if rct.left < 0 or WIDTH < rct.right:
+        yoko = False
+    if rct.top < 0 or HEIGHT < rct.bottom:
+        tate = False
+    return yoko, tate
+
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -36,21 +49,25 @@ def main():
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
+            
         screen.blit(bg_img, [0, 0]) 
-        bom_rct.move_ip(vx, vy)
-        screen.blit(bom_img, bom_rct)
 
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
-        
-
+    
         for k, v in MV_DIC.items():
             if key_lst[k]:
                 sum_mv[0] += v[0]
                 sum_mv[1] += v[1]
-
         kk_rct.move_ip(sum_mv)
+
+        if check_bound(kk_rct) != (True, True):
+            kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
+
         screen.blit(kk_img, kk_rct)
+
+        bom_rct.move_ip(vx, vy)
+        screen.blit(bom_img, bom_rct)
         pg.display.update()
         tmr += 1
         clock.tick(50)
