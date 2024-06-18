@@ -49,9 +49,11 @@ def main():
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
+        
+        if kk_rct.colliderect(bom_rct):
+            return #ゲームオーバー
+        screen.blit(bg_img, [0, 0])
             
-        screen.blit(bg_img, [0, 0]) 
-
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
     
@@ -67,6 +69,11 @@ def main():
         screen.blit(kk_img, kk_rct)
 
         bom_rct.move_ip(vx, vy)
+        yoko, tate = check_bound(bom_rct)
+        if not yoko:
+            vx *= -1
+        if not tate:
+            vy *= -1
         screen.blit(bom_img, bom_rct)
         pg.display.update()
         tmr += 1
